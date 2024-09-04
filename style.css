@@ -1,0 +1,97 @@
+body {
+    color:white;
+    background-color: black;
+}
+
+
+/*teams style*/
+
+#teams {
+    display: flex;
+}
+
+#teams div {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: sans-serif;
+    font-size:50px;
+}
+
+/*timer style*/
+
+#timer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.area {
+    width: 275px;
+    height: 153px;
+    display: flex;
+    position: relative;
+}
+
+.shapebox {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    bottom: 0;
+    border: 3px solid gainsboro;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.colorbox {
+    width: 150px;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: orange;
+    z-index: 1;
+}
+
+.spanbox {
+    position: relative;
+    font-family: sans-serif;
+    font-size: 130px;
+    font-weight: bolder;
+    color: yellow;
+    z-index: 2;
+}
+
+#overlay {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    height: 101%;
+    z-index: 3;
+    font-size: 300px;
+    text-align: center;
+}
+
+#rightOverlay {
+    width: 50%;
+    height: 100%;
+    left:0;
+}
+
+#rightOverlay:hover {
+    text-shadow: 2px 2px 0 red, -2px -2px 0 red, 2px -2px 0 red, -2px 2px 0 red;
+}
+
+#leftOverlay {
+    width: 50%;
+    height: 100%;
+    color:green;
+    right:0;
+}
+
+#leftOverlay:hover {
+    text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
+}
