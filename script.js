@@ -111,6 +111,10 @@ function pause() {
     }
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     resetEvents();
+    const shapeBox = document.getElementById('shapebox'+boxNumber);
+    const sideOverlay = document.getElementById("sideOverlay");
+    sideOverlay.style.left = shapeBox.style.left;
+    sideOverlay.style.right = shapeBox.style.right;
     document.getElementById("leftOverlay").innerHTML = '&#10004;';
     document.getElementById("rightOverlay").innerHTML = '&#10060;';
     setTimeout(() => {
