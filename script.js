@@ -76,6 +76,12 @@ function drainLiquid() {
     }
     else {
         clearInterval(intervalId)
+        intervalId = 0;
+        overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+        resetEvents();
+        setTimeout(() => {
+            overlay.addEventListener('click', reset);
+        });
     }
 }
 
@@ -105,10 +111,9 @@ function play() {
 }
 
 function pause() {
-    if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = 0;
-    }
+    if (!intervalId) return;
+    clearInterval(intervalId);
+    intervalId = 0;
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     resetEvents();
     const shapeBox = document.getElementById('shapebox'+boxNumber);
@@ -128,6 +133,7 @@ function resetEvents() {
     document.getElementById("rightOverlay").innerHTML = '';
     document.getElementById("leftOverlay").removeEventListener('click', rightAnswer)
     document.getElementById("rightOverlay").removeEventListener('click', wrongAnswer)
+    overlay.removeEventListener('click', reset);
     overlay.removeEventListener('click', pause);
     overlay.removeEventListener('click', play);
 }
