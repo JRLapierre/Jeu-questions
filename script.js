@@ -1,7 +1,6 @@
 //settings
 const nbBoxes = 4;
 const totalTimeSeconds = 20;
-const nbQuestions = 15;
 
 //calculated constants
 const intervalTimeMilis = (totalTimeSeconds / (nbBoxes * 100)) * 1000
@@ -107,6 +106,7 @@ function play() {
     resetEvents();
     setTimeout(() => {
         overlay.addEventListener('click', pause);
+        document.addEventListener('keydown', spaceBarHandler);
     });
 }
 
@@ -118,8 +118,8 @@ function pause() {
     resetEvents();
     const shapeBox = document.getElementById('shapebox'+boxNumber);
     const sideOverlay = document.getElementById("sideOverlay");
-    sideOverlay.style.left = shapeBox.style.left;
-    sideOverlay.style.right = shapeBox.style.right;
+    //sideOverlay.style.left = shapeBox.style.left;
+    //sideOverlay.style.right = shapeBox.style.right;
     document.getElementById("leftOverlay").innerHTML = '&#10004;';
     document.getElementById("rightOverlay").innerHTML = '&#10060;';
     setTimeout(() => {
@@ -128,6 +128,13 @@ function pause() {
     });
 }
 
+const spaceBarHandler = function(event) {
+    if (event.key === ' ') { // Check if the pressed key is the space bar
+        event.preventDefault(); // Prevent the default action
+        pause(); // Call the desired function
+    }
+};
+
 function resetEvents() {
     document.getElementById("leftOverlay").innerHTML = '';
     document.getElementById("rightOverlay").innerHTML = '';
@@ -135,6 +142,7 @@ function resetEvents() {
     document.getElementById("rightOverlay").removeEventListener('click', wrongAnswer)
     overlay.removeEventListener('click', reset);
     overlay.removeEventListener('click', pause);
+    document.removeEventListener('keydown', spaceBarHandler);
     overlay.removeEventListener('click', play);
 }
 
@@ -163,7 +171,7 @@ function rightAnswer() {
     //give the points to the team
     const shapeBox = document.getElementById("shapebox"+boxNumber)
     const newPoints = shapeBox.getElementsByTagName("span")[0].textContent;
-    const teamId = shapeBox.style.right === "" ? "team1score" : "team2score";
+    const teamId = (currentQuestion % 2) ? "team1score" : "team2score";
     const spanElement = document.getElementById(teamId);
     spanElement.textContent = parseInt(spanElement.textContent) + parseInt(newPoints);
     //reset

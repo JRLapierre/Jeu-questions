@@ -73,6 +73,7 @@ body {
     z-index: 3;
     font-size: 200px;
     text-align: center;
+    justify-content: center;
 }
 
 #sideOverlay {
@@ -89,16 +90,17 @@ body {
 }
 
 #rightOverlay:hover {
+    color:red;
     text-shadow: 2px 2px 0 red, -2px -2px 0 red, 2px -2px 0 red, -2px 2px 0 red;
 }
 
 #leftOverlay {
     width: 50%;
     height: 100%;
-    color:green;
     right:0;
 }
 
 #leftOverlay:hover {
+    color:green;
     text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
 }
