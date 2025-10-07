@@ -28,7 +28,7 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-
+/*
 #overlay {
     position: absolute;
     display: flex;
@@ -67,3 +67,4 @@ body {
 #leftOverlay:hover {
     text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
 }
+*/
