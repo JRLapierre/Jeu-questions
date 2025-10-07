@@ -7,7 +7,6 @@ const nbQuestions = 15;
 const intervalTimeMilis = (totalTimeSeconds / (nbBoxes * 100)) * 1000
 
 //global variables
-let liquidHeight;
 let boxNumber;
 let intervalId;
 let currentQuestion = 0;
@@ -40,14 +39,13 @@ function createTimer() {
 
 // Function to decrease the height of the colored area
 function drainLiquid() {
+    box = document.getElementById('timerbox'+boxNumber);
     // Reduce height by a small percentage
-    if (liquidHeight > 0) { 
-        liquidHeight -= 1; 
-        document.getElementById('timerbox'+boxNumber).drain1();
+    if (!box.isEmpty()) { 
+        box.drain1();
     }
     else if (boxNumber < nbBoxes) {
         boxNumber += 1;
-        liquidHeight = 100;
     }
     else {
         clearInterval(intervalId)
@@ -68,7 +66,6 @@ function reset() {
         box.resetHeight();
         box.setSide((currentQuestion + i) % 2 == 0);
     }
-    liquidHeight = 100;
     boxNumber = 1;
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     resetEvents();

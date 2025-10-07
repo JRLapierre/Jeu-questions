@@ -100,6 +100,10 @@ class TimerBox extends HTMLElement {
         this.colorbox.style.height = this.liquidHeight + '%';
     }
 
+    isEmpty() {
+        return this.liquidHeight <= 0;
+    }
+
     resetHeight() {
         this.liquidHeight = 100;
         this.colorbox.style.height = this.liquidHeight + '%';
