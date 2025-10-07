@@ -55,8 +55,6 @@ class TimerBox extends HTMLElement {
         this.shapebox.appendChild(this.colorbox);
         this.area.appendChild(this.shapebox);
         shadow.appendChild(this.area);
-
-        this.updateSide();
     }
 
     static get observedAttributes() {
@@ -66,7 +64,8 @@ class TimerBox extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'value') {
             this._value = parseInt(newValue) || 0;
-            this.updateBox();
+            this.spanbox.textContent = this._value;
+            this.setSide((this._value + this.nbSwitch) % 2 === 0);
         }
     }
 
@@ -82,17 +81,6 @@ class TimerBox extends HTMLElement {
     setSide(isLeft) {
         this.shapebox.style.left = isLeft ? '0px' : 'auto';
         this.shapebox.style.right = isLeft ? 'auto' : '0px';
-    }
-
-    updateSide() {
-        const isLeft = (this._value + this.nbSwitch) % 2 === 0;
-        this.shapebox.style.left = isLeft ? '0px' : 'auto';
-        this.shapebox.style.right = isLeft ? 'auto' : '0px';
-    }
-
-    updateBox() {
-        this.updateSide();
-        this.spanbox.textContent = this._value;
     }
 
     drain1() {
@@ -111,7 +99,7 @@ class TimerBox extends HTMLElement {
 
     shiftSide() {
         this.nbSwitch++;
-        this.updateSide();
+        this.setSide(!this.isLeftSide());
     }
 
     isLeftSide() {
