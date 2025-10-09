@@ -10,15 +10,17 @@ const intervalTimeMilis = (totalTimeSeconds / (nbBoxes * 100)) * 1000
 let boxNumber;
 let intervalId;
 let currentQuestion = 0;
-let overlay = document.getElementById("overlay");
 
 //function that will execute themselves
 document.addEventListener('DOMContentLoaded', function() {
-    overlay = document.getElementById("overlay");
-    overlay.addEventListener('click', play);
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     createTimer()
 });
+
+document.addEventListener('play-event', play);
+document.addEventListener('pause-event', pause);
+document.addEventListener('reset-event', reset);
+document.addEventListener('right-answer-event', rightAnswer);
+document.addEventListener('wrong-answer-event', wrongAnswer);
 
 //-----------------------------------------------------
 //initialisation
@@ -50,11 +52,7 @@ function drainLiquid() {
     else {
         clearInterval(intervalId)
         intervalId = 0;
-        overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-        resetEvents();
-        setTimeout(() => {
-            overlay.addEventListener('click', reset);
-        });
+        document.querySelector('x-overlay').setResetEvent();
     }
 }
 
@@ -67,48 +65,18 @@ function reset() {
         box.setSide((currentQuestion + i) % 2 == 0);
     }
     boxNumber = 1;
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    resetEvents();
-    setTimeout(() => {
-        overlay.addEventListener('click', play);
-    });
 }
 
 function play() {
     if (!intervalId) intervalId = setInterval(drainLiquid, intervalTimeMilis);
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0)";
-    resetEvents();
-    setTimeout(() => {
-        overlay.addEventListener('click', pause);
-    });
 }
 
 function pause() {
     if (!intervalId) return;
     clearInterval(intervalId);
     intervalId = 0;
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    resetEvents();
     const timerbox = document.getElementById('timerbox'+boxNumber);
-    const sideOverlay = document.getElementById("sideOverlay");
-    sideOverlay.style.left = timerbox.getPosition().left;
-    sideOverlay.style.right = timerbox.getPosition().right;
-    document.getElementById("leftOverlay").innerHTML = '&#10004;';
-    document.getElementById("rightOverlay").innerHTML = '&#10060;';
-    setTimeout(() => {
-        document.getElementById("leftOverlay").addEventListener('click', rightAnswer);
-        document.getElementById("rightOverlay").addEventListener('click', wrongAnswer);
-    });
-}
-
-function resetEvents() {
-    document.getElementById("leftOverlay").innerHTML = '';
-    document.getElementById("rightOverlay").innerHTML = '';
-    document.getElementById("leftOverlay").removeEventListener('click', rightAnswer)
-    document.getElementById("rightOverlay").removeEventListener('click', wrongAnswer)
-    overlay.removeEventListener('click', reset);
-    overlay.removeEventListener('click', pause);
-    overlay.removeEventListener('click', play);
+    document.querySelector('x-overlay').putLeft(timerbox.isLeftSide());
 }
 
 //--------------------------------------------------------------
@@ -128,6 +96,4 @@ function rightAnswer() {
 function wrongAnswer() {
     //shift the current case
     document.getElementById('timerbox'+boxNumber).shiftSide();
-    //continuer
-    play();
 }
