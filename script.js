@@ -10,18 +10,17 @@ const intervalTimeMilis = (totalTimeSeconds / (nbBoxes * 100)) * 1000
 let boxNumber;
 let intervalId;
 let currentQuestion = 0;
-let overlay;
+
 //function that will execute themselves
-
 document.addEventListener('DOMContentLoaded', function() {
-    overlay = document.querySelector('x-overlay');
-
-    overlay.addEventListener('overlay-play', play);//TODO I dont understand how this works yet
-    overlay.addEventListener('overlay-right-answer', rightAnswer);
-    overlay.addEventListener('overlay-wrong-answer', wrongAnswer);
-    overlay.show();
     createTimer()
 });
+
+document.addEventListener('play-event', play);
+document.addEventListener('pause-event', pause);
+document.addEventListener('reset-event', reset);
+document.addEventListener('right-answer-event', rightAnswer);
+document.addEventListener('wrong-answer-event', wrongAnswer);
 
 //-----------------------------------------------------
 //initialisation
@@ -53,11 +52,7 @@ function drainLiquid() {
     else {
         clearInterval(intervalId)
         intervalId = 0;
-        overlay.show();
-        resetEvents();
-        setTimeout(() => {
-            overlay.addEventListener('click', reset);
-        });
+        document.querySelector('x-overlay').setResetEvent();
     }
 }
 
@@ -70,44 +65,18 @@ function reset() {
         box.setSide((currentQuestion + i) % 2 == 0);
     }
     boxNumber = 1;
-    overlay.show();
-    resetEvents();
-    setTimeout(() => {
-        overlay.addEventListener('click', play);
-    });
 }
 
 function play() {
     if (!intervalId) intervalId = setInterval(drainLiquid, intervalTimeMilis);
-    overlay.hide();
-    resetEvents();
-    setTimeout(() => {
-        overlay.addEventListener('click', pause);
-    });
 }
 
 function pause() {
     if (!intervalId) return;
     clearInterval(intervalId);
     intervalId = 0;
-    overlay.show();
-    resetEvents();
     const timerbox = document.getElementById('timerbox'+boxNumber);
-    overlay.putLeft(timerbox.isLeftSide());
-    overlay.showChoice();
-    setTimeout(() => {
-        document.getElementById("leftOverlay").addEventListener('click', rightAnswer);
-        document.getElementById("rightOverlay").addEventListener('click', wrongAnswer);
-    });
-}
-
-function resetEvents() {
-    overlay.hideChoice();
-    document.getElementById("leftOverlay").removeEventListener('click', rightAnswer)
-    document.getElementById("rightOverlay").removeEventListener('click', wrongAnswer)
-    overlay.removeEventListener('click', reset);
-    overlay.removeEventListener('click', pause);
-    overlay.removeEventListener('click', play);
+    document.querySelector('x-overlay').putLeft(timerbox.isLeftSide());
 }
 
 //--------------------------------------------------------------
@@ -127,6 +96,4 @@ function rightAnswer() {
 function wrongAnswer() {
     //shift the current case
     document.getElementById('timerbox'+boxNumber).shiftSide();
-    //continuer
-    play();
 }
